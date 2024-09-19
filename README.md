@@ -46,7 +46,7 @@ streamlit run app.py
 
 
 ## Launching the app
-Open a web browser and enter the following url: https://my-webapp-vjjh.onrender.com/
+Open a web browser and enter the following url: https://my-webapp-hjac.onrender.com
 
 
 ## License
