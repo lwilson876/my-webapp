@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 # EDA.py
 
+
+# ## Import Libraries
 
 # In[2]:
 
@@ -22,6 +24,8 @@ import plotly.express as px
 from scipy.stats import gaussian_kde
 
 
+# ## Initializing global variables. They are made global to allow access to multiple functions.
+
 # In[3]:
 
 
@@ -37,6 +41,8 @@ price_range_fig = None
 top_5_vehicle_types_volume_fig = None
 top_5_vehicle_types_revenue_fig = None
 
+
+# ## Loading the data. This code ensures that the data file is accessed via its relative path
 
 # In[4]:
 
@@ -66,6 +72,8 @@ def load_data():
     return df_loaded
 
 
+
+# ## Cleaning data
 
 # In[5]:
 
@@ -112,7 +120,9 @@ def cleanup_data():
     return
 
 
-# In[80]:
+# ## Data Analysis and charting functions
+
+# In[6]:
 
 
 def analyze_data():
@@ -294,6 +304,10 @@ def analyze_data():
     return
 
 
+# ## Public functions
+
+# These functions are used by the frontend application (app.py) to access and display the charts, tables and calculations.
+
 # In[7]:
 
 
@@ -337,7 +351,7 @@ def get_cylinder():
     return cylinder_fig
 
 
-# In[ ]:
+# In[12]:
 
 
 def get_vehicle_type():
@@ -345,7 +359,7 @@ def get_vehicle_type():
     return vehicle_type_fig
 
 
-# In[12]:
+# In[13]:
 
 
 def get_price_dist():
@@ -353,7 +367,7 @@ def get_price_dist():
     return price_dist_fig
 
 
-# In[ ]:
+# In[14]:
 
 
 def get_top_5_manufacturers_cylinder():
@@ -361,7 +375,7 @@ def get_top_5_manufacturers_cylinder():
     return top_5_manufacturers_cylinder_fig
 
 
-# In[ ]:
+# In[15]:
 
 
 def get_price_range_fig():
@@ -369,7 +383,7 @@ def get_price_range_fig():
     return price_range_fig
 
 
-# In[ ]:
+# In[16]:
 
 
 def get_top_5_vehicle_types_volume():
@@ -377,7 +391,7 @@ def get_top_5_vehicle_types_volume():
     return top_5_vehicle_types_volume_fig
 
 
-# In[ ]:
+# In[17]:
 
 
 def get_top_5_vehicle_types_revenue():
