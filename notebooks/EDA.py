@@ -13,8 +13,8 @@
 import streamlit as st
 import os
 import pandas as pd
-#import matplotlib.pyplot as plt
-#import seaborn as sns
+import matplotlib.pyplot as plt
+import seaborn as sns
 from scipy.stats import ttest_ind
 import scipy.stats as stats
 import numpy as np
@@ -34,6 +34,8 @@ vehicle_type_fig = None
 price_dist_fig = None
 top_5_manufacturers_cylinder_fig = None
 price_range_fig = None
+top_5_vehicle_types_volume_fig = None
+top_5_vehicle_types_revenue_fig = None
 
 
 # In[4]:
@@ -82,6 +84,13 @@ def cleanup_data():
 
     # Replace NaN with False and non-NaN with True in the 'is_4wd' column
     df['is_4wd'] = df['is_4wd'].notna()
+    
+    # Several empty cells exist. Filling This fills missing values in the 'cylinders','odometer' and 'model_year' column with the 
+    # corresponding median 'cylinders','odometer' and 'model_year' value within each group of the 'type' column.
+    
+    df['cylinders'] = df[['cylinders', 'type']].groupby('type').transform(lambda x:x.fillna(x.median()))
+    df['odometer'] = df[['odometer', 'type']].groupby('type').transform(lambda x:x.fillna(x.median()))
+    df['model_year'] = df[['model_year', 'type']].groupby('type').transform(lambda x:x.fillna(x.median()))
 
     # Remove all rows with any NaN values
     df = df.dropna()
@@ -103,7 +112,7 @@ def cleanup_data():
     return
 
 
-# In[62]:
+# In[80]:
 
 
 def analyze_data():
@@ -112,6 +121,8 @@ def analyze_data():
     global price_dist_fig
     global top_5_manufacturers_cylinder_fig
     global price_range_fig
+    global top_5_vehicle_types_volume_fig
+    global top_5_vehicle_types_revenue_fig
 
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     # Sales by cylinder count >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -210,6 +221,9 @@ def analyze_data():
                                                    xaxis_tickangle=-45)
 
 
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # Top 5 Manufacturers based on most popular cylinders >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
     # number of cars sold by price ranges
     # Define the price bins and labels
     price_bins = [0, 10000, 20000, 30000, 40000, 50000, 60000]
@@ -236,6 +250,46 @@ def analyze_data():
     
     # Update layout to rotate x-axis labels and adjust size
     price_range_fig.update_layout(xaxis_tickangle=-45, width=800, height=600)
+
+    
+
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # Top 5 Vehicle types sold (volume) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    
+    # Group by vehicle type and count the number of vehicles sold
+    vehicle_type_counts = df['type'].value_counts().nlargest(5)
+
+    # Create a DataFrame from the value counts
+    vehicle_type_df = vehicle_type_counts.reset_index()
+    vehicle_type_df.columns = ['Vehicle Type', 'Number of Vehicles Sold']
+
+    # Create the pie chart using Plotly
+    top_5_vehicle_types_volume_fig = px.pie(vehicle_type_df, 
+                 names='Vehicle Type', 
+                 values='Number of Vehicles Sold', 
+                 title='Top 5 Vehicle Types Sold',
+                 color_discrete_sequence=px.colors.qualitative.Set3)
+
+    
+
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    # Top 5 Vehicle types sold (revenue) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    
+
+    # Group by vehicle type and calculate the total sales revenue
+    revenue_by_vehicle_type = df.groupby('type')['price'].sum().nlargest(5)
+
+    # Create a DataFrame from the grouped data
+    vehicle_type_revenue_df = revenue_by_vehicle_type.reset_index()
+    vehicle_type_revenue_df.columns = ['Vehicle Type', 'Total Sales Revenue']
+
+    # Create the pie chart using Plotly
+    top_5_vehicle_types_revenue_fig = px.pie(vehicle_type_revenue_df, 
+                 names='Vehicle Type', 
+                 values='Total Sales Revenue', 
+                 title='Top 5 Vehicle Types by Sales Revenue',
+                 color_discrete_sequence=px.colors.qualitative.Set3)
+
 
     return
 
@@ -313,4 +367,20 @@ def get_top_5_manufacturers_cylinder():
 def get_price_range_fig():
     global price_range_fig
     return price_range_fig
+
+
+# In[ ]:
+
+
+def get_top_5_vehicle_types_volume():
+    global top_5_vehicle_types_volume_fig
+    return top_5_vehicle_types_volume_fig
+
+
+# In[ ]:
+
+
+def get_top_5_vehicle_types_revenue():
+    global top_5_vehicle_types_revenue_fig
+    return top_5_vehicle_types_revenue_fig
 
