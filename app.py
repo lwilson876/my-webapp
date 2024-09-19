@@ -50,7 +50,8 @@ if load_message == "Data loaded successfully":
     st.markdown("""
         <ol>
             <li>Data was checked for duplicates and removed if necessary.</li>
-            <li>Column 'is_4wd' was found to have '1' or missing values. This could be due to: (a) the data in its original format utilized 1 and 0 as boolean values, but the zeros were lost due to formatting and (b) that the data is truly missing. Considering that approximately one-half of this column has blank values, the former was chosen, and data was updated as follows: '1' was set to 'true' and missing values set to 'false'.</li>
+            <li>Column 'is_4wd' was found to have '1' or missing values. This could be due to: (a) the data in its original format utilized 1 and 0 as boolean values, but the zeros were lost due to formatting and (b) the data is truly missing. Considering that approximately one-half of this column has blank values, the former was chosen, and data was updated as follows: '1' was set to 'true,' and missing values were set to 'false'.</li>
+            <li>Rows containing blank values were filled using values of data of similar values for the columns model_year ,cylinder, and odometer.</li>
             <li>Other rows containing blank values have been removed as they would have invalidated the accuracy of the query due to the presence of null or NaN values.</li>
             <li>Improved readability by capitalizing the first letter of each word related to vehicles.</li>
             <li>Modified 'model_year', 'cylinder' and 'odometer' to remove decimal places.</li>
