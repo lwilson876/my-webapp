@@ -1,5 +1,3 @@
-# app.py
-
 import streamlit as st
 import pandas as pd
 import plotly_express as px
@@ -91,6 +89,12 @@ if load_message == "Data loaded successfully":
     # Display sales by price range
     st.plotly_chart(eda.get_price_range_fig())
 
+    # pie Chart showing unit sales sales by type
+    st.plotly_chart(eda.get_top_5_vehicle_types_volume())
+
+    # pie Chart showing sales revenue by type
+    st.plotly_chart(eda.get_top_5_vehicle_types_revenue())
+
     
 
     st.markdown("<h4>Conclusion</h4>", unsafe_allow_html=True)
@@ -102,28 +106,9 @@ if load_message == "Data loaded successfully":
             <li>The charts show that the most frequently sold vehicles based on their types were: Trucks, SUVs, Sedan, Pickup, and Coupe in the same order which is consistent with top-selling vehicles, based on cylinders.</li>
             <li>We can also see that most sales of Trucks and SUVs are either with 8 or 6 cylinders, which means that customers prefer Ford and Chevrolet Trucks and SUVs with 8 cylinders as their first choice and 6 cylinders as their second choice.</li>
             <li>The variance between the sale of Truck, SUVs, and Sedan in units is only approximately 1%</li>
-            <li>The distribution of the units of sale of vehicles in percentage:
-                <ul>
-                    <li>Truck 27.23%</li>
-                    <li>Suv: 26.98%</li>
-                    <li>Sedan: 26.34%</li>
-                    <li>Pickup: 15.35%</li>
-                    <li>Coupe: 5.12%</li>
-                </ul>
-            </li>
-            <li>The Distribution of sales in Dollars $$$ of vehicles by percentage:
-                <ul>
-                    <li>Truck 50.48%</li>
-                    <li>Suv: 33.77%</li>
-                    <li>Sedan: 20.49%</li>
-                    <li>Pickup: 27.18%</li>
-                    <li>Coupe: 8.08%</li>
-                </ul>
-            </li>
             <li>Although Trucks, SUV and sedans are the top 3 vehicles that are sold, the top 3 revenue earners are Trucks, SUVs, and Pickups, this means that the dealer should create marketing around these types of vehicles.</li>
         </ol>
         """, unsafe_allow_html=True)
     
 else:
     st.write("Something went wrong. Contact Support")
-
